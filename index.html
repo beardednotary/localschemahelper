@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Schema Helper - Stop Being Invisible to Google</title>
+  <meta name="description" content="Chrome extension that generates LocalBusiness schema so Google actually understands your business. Free, fast, no BS.">
+  <link rel="icon" type="image/png" href="icon-128.png">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #111;
+      background: #fff;
+    }
+    
+    /* Brutalist-inspired header */
+    header {
+      border-bottom: 4px solid #000;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      color: #000;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    
+    .install-btn {
+      background: #000;
+      color: #fff;
+      padding: 12px 24px;
+      text-decoration: none;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s;
+    }
+    
+    .install-btn:hover {
+      background: #3b82f6;
+    }
+    
+    /* Hero with bold typography */
+    .hero {
+      padding: 80px 20px 60px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .hero h1 {
+      font-size: clamp(36px, 8vw, 72px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -2px;
+    }
+    
+    .highlight {
+      background: linear-gradient(180deg, transparent 60%, #ffd700 60%);
+      padding: 0 4px;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(18px, 3vw, 24px);
+      color: #666;
+      margin-bottom: 40px;
+      max-width: 600px;
+    }
+    
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .primary-cta {
+      background: #000;
+      color: #fff;
+      padding: 16px 32px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      border: 3px solid #000;
+      display: inline-block;
+      transition: all 0.15s;
+    }
+    
+    .primary-cta:hover {
+      background: #fff;
+      color: #000;
+    }
+    
+    .badge {
+      background: #f3f4f6;
+      padding: 8px 16px;
+      border: 2px solid #000;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    /* The Problem - Visual metaphor */
+    .problem-section {
+      background: #000;
+      color: #fff;
+      padding: 80px 20px;
+    }
+    
+    .problem-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: #fff;
+      border: 2px solid #fff;
+    }
+    
+    .problem-card {
+      background: #000;
+      padding: 40px;
+      position: relative;
+    }
+    
+    .problem-card h3 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      font-weight: 800;
+    }
+    
+    .problem-card p {
+      color: #ccc;
+      line-height: 1.7;
+    }
+    
+    .problem-emoji {
+      font-size: 48px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    
+    /* Demo section with actual code */
+    .demo-section {
+      padding: 80px 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .demo-section h2 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    
+    .demo-subtitle {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 40px;
+    }
+    
+    .demo-box {
+      border: 3px solid #000;
+      padding: 24px;
+      background: #fff;
+    }
+    
+    .demo-box h3 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-badge {
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    
+    .bad {
+      background: #fee;
+      color: #c00;
+    }
+    
+    .good {
+      background: #efe;
+      color: #070;
+    }
+    
+    .code-block {
+      background: #f8f8f8;
+      border: 2px solid #e0e0e0;
+      padding: 16px;
+      font-family: 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+    
+    .checklist {
+      list-style: none;
+      margin-top: 12px;
+    }
+    
+    .checklist li {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+    }
+    
+    /* How it works - Simple steps */
+    .steps-section {
+      background: #ffd700;
+      padding: 80px 20px;
+    }
+    
+    .steps-section h2 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 60px;
+      letter-spacing: -1px;
+    }
+    
+    .steps {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .step {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+      align-items: start;
+    }
+    
+    .step-num {
+      width: 80px;
+      height: 80px;
+      background: #000;
+      color: #ffd700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 900;
+      border: 3px solid #000;
+    }
+    
+    .step-content h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    
+    .step-content p {
+      color: #333;
+      font-size: 18px;
+    }
+    
+    /* Pricing - Honest and simple */
+    .pricing-section {
+      padding: 80px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .pricing-section h2 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 900;
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+    
+    .pricing-intro {
+      font-size: 20px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    
+    .pricing-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    
+    .price-card {
+      border: 3px solid #000;
+      padding: 32px;
+      background: #fff;
+      position: relative;
+    }
+    
+    .price-card.featured {
+      background: #000;
+      color: #fff;
+    }
+    
+    .featured .price-btn {
+      background: #fff;
+      color: #000;
+    }
+    
+    .featured .price-btn:hover {
+      background: #ffd700;
+    }
+    
+    .price-label {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    
+    .price-amount {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    
+    .price-period {
+      color: #666;
+      margin-bottom: 24px;
+    }
+    
+    .featured .price-period {
+      color: #ccc;
+    }
+    
+    .price-features {
+      list-style: none;
+      margin-bottom: 24px;
+    }
+    
+    .price-features li {
+      padding: 8px 0;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .featured .price-features li {
+      border-bottom-color: #333;
+    }
+    
+    .price-btn {
+      width: 100%;
+      padding: 14px;
+      background: #000;
+      color: #fff;
+      border: 3px solid #000;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    
+    .price-btn:hover {
+      background: #fff;
+      color: #000;
+    }
+    
+    /* Real talk section */
+    .honest-section {
+      background: #f8f8f8;
+      padding: 80px 20px;
+    }
+    
+    .honest-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    .honest-section h2 {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 900;
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+    }
+    
+    .honest-section p {
+      font-size: 20px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    .honest-section strong {
+      background: #ffd700;
+      padding: 0 4px;
+    }
+    
+    /* Footer */
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 60px 20px 30px;
+    }
+    
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    
+    .footer-col ul {
+      list-style: none;
+    }
+    
+    .footer-col a {
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      padding: 6px 0;
+      transition: color 0.15s;
+    }
+    
+    .footer-col a:hover {
+      color: #ffd700;
+    }
+    
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      color: #999;
+      font-size: 14px;
+    }
+    
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      .before-after {
+        grid-template-columns: 1fr;
+      }
+      
+      .step {
+        grid-template-columns: 60px 1fr;
+      }
+      
+      .step-num {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="logo">LOCAL SCHEMA HELPER</a>
+    <a href="#" class="install-btn">ADD TO CHROME</a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Google can't read your website. <span class="highlight">Fix it in 30 seconds.</span></h1>
+    <p class="hero-subtitle">
+      70% of local businesses are invisible to Google because they're missing schema markup. This Chrome extension generates it instantly.
+    </p>
+    <div class="cta-row">
+      <a href="#" class="primary-cta">Install Free Extension</a>
+      <span class="badge">100% Free • No Signup</span>
+    </div>
+  </section>
+
+  <!-- The Problem -->
+  <section class="problem-section">
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="problem-emoji">🔍</span>
+        <h3>Google doesn't understand plain text</h3>
+        <p>Your website says "Call us at 555-1234" but Google sees meaningless characters. Schema translates your site into Google's language.</p>
+      </div>
+      
+      <div class="problem-card">
+        <span class="problem-emoji">🤷</span>
+        <h3>JSON-LD is confusing</h3>
+        <p>You'd need to learn JSON syntax, understand schema.org vocabulary, and hand-code everything. That's why nobody does it.</p>
+      </div>
+      
+      <div class="problem-card">
+        <span class="problem-emoji">💸</span>
+        <h3>Hiring someone costs $200+</h3>
+        <p>Developers charge hundreds to add schema. SEO plugins do it wrong. You need a tool that just works.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="demo-section">
+    <h2>Before & After</h2>
+    <p class="demo-subtitle">Here's what happens when you use Local Schema Helper:</p>
+    
+    <div class="before-after">
+      <div class="demo-box">
+        <h3>
+          BEFORE
+          <span class="status-badge bad">❌ INVISIBLE</span>
+        </h3>
+        <p style="margin-bottom: 12px; color: #666;">What Google sees:</p>
+        <ul class="checklist">
+          <li>❌ No business name</li>
+          <li>❌ No phone number</li>
+          <li>❌ No address</li>
+          <li>❌ No hours</li>
+          <li>❌ Missing from Local Pack</li>
+        </ul>
+      </div>
+      
+      <div class="demo-box">
+        <h3>
+          AFTER
+          <span class="status-badge good">✅ VISIBLE</span>
+        </h3>
+        <p style="margin-bottom: 12px; color: #666;">What Google sees:</p>
+        <div class="code-block">{
+  "@type": "LocalBusiness",
+  "name": "Your Business",
+  "telephone": "555-1234",
+  "address": {...},
+  "openingHours": [...]
+}</div>
+        <p style="margin-top: 12px; font-weight: 600;">→ Shows in Maps, Local Pack, Rich Results</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="steps-section">
+    <h2>How It Works</h2>
+    
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Click the extension on any business site</h3>
+          <p>It automatically scans for name, phone, address, and hours.</p>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Fill in what's missing (takes 15 seconds)</h3>
+          <p>If something wasn't detected, just type it in. Choose from preset opening hours.</p>
+        </div>
+      </div>
+      
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Copy the code and paste it in your &lt;head&gt;</h3>
+          <p>Done. Google now understands your business. Check Google Search Console in 3-7 days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing-section">
+    <h2>Pricing</h2>
+    <p class="pricing-intro">Free forever for LocalBusiness schema. Pay once if you want advanced stuff.</p>
+    
+    <div class="pricing-cards">
+      <div class="price-card">
+        <div class="price-label">FREE</div>
+        <div class="price-amount">$0</div>
+        <div class="price-period">forever</div>
+        <ul class="price-features">
+          <li>✓ LocalBusiness schema</li>
+          <li>✓ FAQ schema</li>
+          <li>✓ Auto-detection</li>
+          <li>✓ Manual overrides</li>
+          <li>✓ Unlimited sites</li>
+        </ul>
+        <button class="price-btn">Install Free</button>
+      </div>
+      
+      <div class="price-card featured">
+        <div class="price-label">PRO (LIFETIME - coming soon)</div>
+        <div class="price-amount">$29</div>
+        <div class="price-period">one-time payment</div>
+        <ul class="price-features">
+          <li>✓ Everything in Free</li>
+          <li>✓ Restaurant schema</li>
+          <li>✓ Product schema</li>
+          <li>✓ Save templates</li>
+          <li>✓ PDF reports</li>
+          <li>✓ Priority support</li>
+        </ul>
+        <!-- <button class="price-btn">Buy Lifetime</button> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Honest Section -->
+  <section class="honest-section">
+    <div class="honest-content">
+      <h2>Real talk</h2>
+      <p>
+        Schema markup won't <strong>magically</strong> rank you #1 on Google. But it's one of those things that <strong>should just be on every website</strong> and somehow isn't.
+      </p>
+      <p>
+        Google explicitly recommends LocalBusiness schema for all local businesses. If you don't have it, you're voluntarily making yourself less visible. That's dumb.
+      </p>
+      <p>
+        This extension makes it brainlessly easy to add schema. It takes 30 seconds. There's a free version that does the important stuff. You don't need to be a developer.
+      </p>
+      <p>
+        <strong>Install it. Use it. Move on with your life.</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">Chrome Extension</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#pricing-section">Pricing</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <!-- <li><a href="#">Help Center</a></li> -->
+          <li><a href="mailto:hey@localschemahelper.com">Contact</a></li>
+          <li><a href="mailto:hey@localschemahelper.com">Report Bug</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <!-- <li><a href="#">Refunds</a></li> -->
+        </ul>
+      </div>
+      
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <!-- <li><a href="#">About</a></li>
+          <li><a href="#">Blog</a></li> -->
+          <li><a href="mailto:hey@localschemahelper.com">hey@localschemahelper.com</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© 2025 Local Schema Helper. Made by someone who was tired of manually coding JSON-LD.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
