@@ -1,193 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Privacy Policy – Local Schema Helper</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Privacy policy for the Local Schema Helper Chrome extension." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Privacy policy for the Local Schema Helper Chrome extension.">
+  <link rel="icon" type="image/png" href="/icon-128.png">
   <style>
-    :root {
-      --brand: #2563eb;
-      --ink: #0f172a;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --radius: 12px;
-      --shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.05), 0 10px 10px -5px rgba(15, 23, 42, 0.04);
-    }
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
     body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       line-height: 1.6;
+      color: #111;
+      background: #f8f8f8;
     }
+    /* Header (same vibe as index) */
     header {
-      background: #ffffff;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
-      padding: 1.2rem 1.5rem;
+      border-bottom: 4px solid #000;
+      padding: 20px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: .6rem;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    header .logo-dot {
-      width: 36px;
-      height: 36px;
-      background: var(--brand);
-      border-radius: 9999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      color: #000;
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .install-btn {
+      background: #000;
       color: #fff;
+      padding: 10px 20px;
+      text-decoration: none;
       font-weight: 700;
-      font-size: .85rem;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.15s;
     }
-    header h1 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0;
+    .install-btn:hover {
+      background: #3b82f6;
     }
-    header p {
-      margin: 0;
-      font-size: .75rem;
-      color: var(--muted);
+    /* Page hero */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px 20px;
     }
-    main {
-      max-width: 760px;
-      margin: 2.5rem auto 3.5rem;
-      padding: 0 1.25rem;
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 54px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #555;
+      max-width: 620px;
+    }
+    /* Content card */
+    .content-wrap {
+      max-width: 900px;
+      margin: 20px auto 60px;
+      padding: 0 20px;
     }
     .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2rem 2.25rem;
-      box-shadow: var(--shadow);
+      background: #fff;
+      border: 3px solid #000;
+      padding: 32px 32px 40px;
     }
-    h2 {
+    .card h2 {
+      font-size: 24px;
+      margin-top: 28px;
+      margin-bottom: 8px;
+    }
+    .card h2:first-of-type {
       margin-top: 0;
-      font-size: 1.4rem;
     }
-    h3 {
-      margin-top: 1.6rem;
-      font-size: 1.05rem;
+    .card h3 {
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 6px;
     }
-    p, li {
-      font-size: .95rem;
-      color: #1f2937;
+    .card p, .card li {
+      font-size: 16px;
+      color: #222;
     }
-    code {
-      background: rgba(37, 99, 235, 0.1);
-      padding: 0.1rem .45rem;
-      border-radius: 4px;
-      font-size: .8rem;
+    .card ul {
+      margin-left: 20px;
+      margin-top: 6px;
     }
-    footer {
-      text-align: center;
-      padding: 2rem 1rem 3rem;
-      font-size: .8rem;
-      color: var(--muted);
+    .muted {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 16px;
     }
     a {
-      color: var(--brand);
-      text-decoration: none;
+      color: #000;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
     }
     a:hover {
-      text-decoration: underline;
+      color: #3b82f6;
+    }
+    /* Footer (copied from index style) */
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 60px 20px 30px;
+    }
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col a {
+      color: #ccc;
+      text-decoration: none;
+      display: block;
+      padding: 6px 0;
+      transition: color 0.15s;
+    }
+    .footer-col a:hover {
+      color: #ffd700;
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      color: #999;
+      font-size: 14px;
     }
     @media (max-width: 640px) {
       .card {
-        padding: 1.4rem 1.25rem 1.5rem;
+        padding: 24px 18px 30px;
       }
-      main {
-        margin-top: 1.75rem;
+      .hero {
+        padding-top: 50px;
+      }
+      header {
+        flex-wrap: wrap;
+        gap: 12px;
       }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <div class="logo-dot">{}</div>
-    <div>
-      <h1>Local Schema Helper</h1>
-      <p>Chrome Extension</p>
-    </div>
+    <a href="/" class="logo">LOCAL SCHEMA HELPER</a>
+    <a href="/" class="install-btn">ADD TO CHROME</a>
   </header>
 
-  <main>
-    <div class="card">
-      <h2>Privacy Policy</h2>
-      <p><strong>Last updated:</strong> October 30, 2025</p>
+  <section class="hero">
+    <h1>Privacy Policy</h1>
+    <p>How the Local Schema Helper Chrome extension handles data, permissions, and what stays on your device.</p>
+  </section>
 
+  <main class="content-wrap">
+    <article class="card">
+      <p class="muted"><strong>Last updated:</strong> October 30, 2025</p>
+
+      <h2>Overview</h2>
       <p>
-        This Privacy Policy explains how the <strong>Local Schema Helper</strong> Chrome extension (“the extension”, “we”, “our”) handles information.
-        In short: the extension is designed to run locally in your browser and does <strong>not</strong> send your data to external servers.
+        Local Schema Helper is designed to run entirely in your browser. Its single purpose is to scan the page you are currently viewing
+        and help you generate valid structured data (JSON-LD) such as <code>LocalBusiness</code> and <code>FAQPage</code>.
+      </p>
+      <p>
+        We do <strong>not</strong> collect, store, or transmit your personal data to our servers, because we don't operate any backend for this extension.
       </p>
 
-      <h3>What the extension does</h3>
+      <h2>What the extension does</h2>
       <p>
-        Local Schema Helper analyzes the webpage you currently have open in Chrome to detect existing structured data (such as JSON-LD and microdata)
-        and to help you generate valid schema markup (for example, <code>LocalBusiness</code> or <code>FAQPage</code>).
+        When you click the extension, it reads the DOM of the active tab to look for existing structured data (JSON-LD scripts, microdata, FAQ blocks),
+        and then shows you a cleaned-up version you can copy and paste into your site.
       </p>
 
-      <h3>Data we collect</h3>
-      <p><strong>We do not collect, store, or transmit personal data.</strong></p>
+      <h2>Data we collect</h2>
+      <p><strong>We do not collect personal data.</strong></p>
       <ul>
-        <li>No analytics or tracking is built into the extension.</li>
-        <li>No browsing history is collected.</li>
-        <li>No page content is sent to any remote server.</li>
+        <li>No analytics or tracking are built into the extension.</li>
+        <li>No browsing history is sent to us.</li>
+        <li>No page content is uploaded to a remote server.</li>
       </ul>
 
-      <h3>Local storage</h3>
+      <h2>Local storage</h2>
       <p>
-        The extension may store some values in Chrome’s <code>storage</code> (for example, a business name or address you manually override in the popup)
-        so you don’t have to retype them on every page. This information stays in your browser and is not shared or synced by us.
+        The extension may use Chrome’s <code>storage</code> API to remember values you typed (for example, a business name, phone number, or address)
+        so you don’t have to re-enter them on every page. This information stays in your browser and is not shared with us.
       </p>
 
-      <h3>Permissions explained</h3>
+      <h2>Permissions</h2>
+      <p>We ask for the minimum permissions needed to do the job:</p>
       <ul>
-        <li><strong>activeTab</strong> – lets the extension read the current page when you click the icon, so it can detect structured data.</li>
-        <li><strong>host permissions</strong> – needed so the content script can run on any site you want to analyze.</li>
-        <li><strong>storage</strong> – used only to save your own overrides (like business name/address) locally.</li>
+        <li><strong>activeTab</strong> – to read the current page only when you open the extension.</li>
+        <li><strong>host permissions (&lt;all_urls&gt;)</strong> – to allow the content script to analyze any site you want to generate schema for.</li>
+        <li><strong>storage</strong> – to save your own overrides locally.</li>
       </ul>
+      <p>These permissions are used only to fulfill the extension’s single purpose.</p>
+
+      <h2>Third parties</h2>
       <p>
-        These permissions are used solely to fulfill the extension’s single purpose: helping you audit and generate schema markup.
+        We do not sell, rent, or share your data with third parties. We do not use your data for advertising or for any unrelated purpose.
       </p>
 
-      <h3>Third parties</h3>
+      <h2>Changes</h2>
       <p>
-        The extension does not sell, rent, or transfer data to third parties. We do not use your data for advertising or for any purpose unrelated
-        to structured data generation.
+        If we add optional online features in the future (for example, license validation or cloud template sync for the Pro version),
+        this page will be updated and those network calls will be clearly documented.
       </p>
 
-      <h3>Children’s privacy</h3>
+      <h2>Contact</h2>
       <p>
-        This extension is intended for website owners, SEOs, and developers. It does not target or knowingly collect information from children.
+        Questions? Email <a href="mailto:hey@localschemahelper.com">hey@localschemahelper.com</a>
       </p>
-
-      <h3>Changes to this policy</h3>
-      <p>
-        If we add optional online features in the future (for example, Pro licensing or cloud template sync), this page will be updated and those
-        features will be clearly described.
-      </p>
-
-      <h3>Contact</h3>
-      <p>
-        If you have questions about this policy or how the extension works, contact: <a href="mailto:support@localschemahelper.com">support@localschemahelper.com</a>
-      </p>
-    </div>
+    </article>
   </main>
 
   <footer>
-    &copy; <span id="year"></span> Local Schema Helper &middot; <a href="https://localschemahelper.com">localschemahelper.com</a>
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="/">Chrome Extension</a></li>
+          <li><a href="/">Documentation</a></li>
+          <li><a href="/">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="mailto:hey@localschemahelper.com">Contact</a></li>
+          <li><a href="mailto:hey@localschemahelper.com">Report Bug</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="mailto:hey@localschemahelper.com">hey@localschemahelper.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Local Schema Helper. Made by someone who was tired of manually coding JSON-LD.</p>
+    </div>
   </footer>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
